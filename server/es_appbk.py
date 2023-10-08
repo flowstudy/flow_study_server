@@ -28,16 +28,6 @@ ES_INDEX = "flow_code"
 # 向es插入一条数据,data格式为dict
 # 使用时修改es地址，索引名
 def search_es(query, start, limit, contract_type, contract_category):
-# def search_es(query, start, limit,contract_type, contract_category):
-    # dsl = {"query": {
-    #                 "query_string": {
-    #                     "fields": ["contract_name", "contract_code"],
-    #                     "query": query
-    #                 }
-    #         },
-    #  "()"
-    # query = "(contract_name:("+query+"))OR(contract_code:("+query+"))"
-    # contract_category = None
     if contract_type and contract_category:
         query = "(contract_name:("+query+"))OR(contract_code:("+query+"))AND(contract_type:("+contract_type+"))AND(contract_category:("+contract_category+"))"
     elif contract_category and contract_type is None:
@@ -46,12 +36,10 @@ def search_es(query, start, limit, contract_type, contract_category):
         query = "(contract_name:("+query+"))OR(contract_code:("+query+"))AND(contract_type:("+contract_type+"))"
     else:
         query = "(contract_name:("+query+"))OR(contract_code:("+query+"))"
-    # query = "(contract_name:("+query+"))OR(contract_code:("+query+"))"
-    # query = "(contract_name:("+query+"))OR(contract_code:("+query+"))AND(contract_type:("+contract_type+"))"
-    # print("321321"+query)
+
+
     dsl = {"query": {
                "query_string": {
-                   # "fields": ["contract_name", "contract_code"],
                    "query": query
                }
        },
@@ -148,8 +136,6 @@ def get_similar_code(contract_address,contract_name):
         query = word_list[0:50]
         query_a = " ".join(query)
         es_result = get_similar(query_a)
-        # print("=======")
-        # print(es_result)
     else:
         query_a = " ".join(word_list)
         es_result = get_similar(query_a)
